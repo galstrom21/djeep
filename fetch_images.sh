@@ -7,12 +7,16 @@ function fetch_ubuntu {
   local images=( maverick natty oneiric precise trusty )
   local files=( initrd.gz linux )
 
-  mkdir ${DIRNAME}
+  if [[ ! -d ${DIRNAME} ]]; then
+      mkdir ${DIRNAME}
+  fi
 
   pushd ${DIRNAME}
   for image in ${images[@]}; do
       echo "Grabbing files for Ubuntu-${image}"
-      mkdir "${image}-${SUFFIX}";
+      if [[ ! -d "${image}-${SUFFIX}" ]]; then
+          mkdir "${image}-${SUFFIX}"
+      fi
       # cp preseed.txt ../../../templates/preseed/${image}-${SUFFIX}-preseed.txt;
       for file in ${files[@]}; do
           wget "${urlbase}/ubuntu/dists/${image}/main/installer-${SUFFIX}/current/images/netboot/ubuntu-installer/${SUFFIX}/${file}" -q -P ${image}-${SUFFIX};
@@ -28,12 +32,16 @@ function fetch_centos {
   local images=( 6.4 )
   local files=( initrd.img vmlinuz )
 
-  mkdir ${DIRNAME}
+  if [[ ! -d ${DIRNAME} ]]; then
+      mkdir ${DIRNAME}
+  fi
 
   pushd ${DIRNAME}
   for image in ${images[@]}; do
       echo "Grabbing files for CentOS-${image}"
-      mkdir "${image}-${SUFFIX}";
+      if [[ ! -d "${image}-${SUFFIX}" ]]; then
+          mkdir "${image}-${SUFFIX}";
+      fi
       for file in ${files[@]}; do
           wget "${urlbase}/centos/${image}/os/${SUFFIX}/images/pxeboot/${file}" -q -P ${image}-${SUFFIX};
       done;
